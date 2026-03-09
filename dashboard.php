@@ -35,6 +35,7 @@ $roleLabel  = $roleLabels[$rol] ?? $rol;
     </span>
   </div>
   <div class="topbar-right">
+    <div id="reloj" style="font-size:.82rem;color:var(--text2);text-align:right;line-height:1.4;"></div>
     <span class="topbar-user"><?= htmlspecialchars($nombre) ?></span>
     <span class="role-badge role-<?= $rol ?>"><?= $roleLabel ?></span>
     <a href="qr.php" target="_blank" class="btn-logout" title="Ver menú QR">📱</a>
@@ -63,6 +64,20 @@ $roleLabel  = $roleLabels[$rol] ?? $rol;
 <script>
 const ROL   = '<?= $rol ?>';
 const TURNO = '<?= $turno ?>';
+
+// Reloj en topbar
+const MESES_ES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+const DIAS_ES  = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+function actualizarReloj() {
+  const now = new Date();
+  const dia  = DIAS_ES[now.getDay()];
+  const fecha = `${now.getDate()} de ${MESES_ES[now.getMonth()]} ${now.getFullYear()}`;
+  const hora  = now.toLocaleTimeString('es-BO', {hour:'2-digit', minute:'2-digit', second:'2-digit'});
+  const el = document.getElementById('reloj');
+  if (el) el.innerHTML = `<span style="font-weight:600;">${hora}</span><br><span style="font-size:.75rem;text-transform:capitalize;">${dia}, ${fecha}</span>`;
+}
+actualizarReloj();
+setInterval(actualizarReloj, 1000);
 </script>
 <script src="assets/app.js"></script>
 </body>

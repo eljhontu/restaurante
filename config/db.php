@@ -1,19 +1,18 @@
 <?php
-// =============================================
-// config/db.php - Configuración de Base de Datos
-// =============================================
+// config/db.php
+date_default_timezone_set('America/La_Paz'); // Bolivia UTC-4
 
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'restaurante_os');
-define('DB_USER', 'root');
-define('DB_PASS', '');      // En XAMPP por defecto está vacío
+define('DB_HOST',    'localhost');
+define('DB_NAME',    'restaurante_os');
+define('DB_USER',    'root');
+define('DB_PASS',    '');
 define('DB_CHARSET', 'utf8mb4');
 
-function getDB() {
+function getDB(): PDO {
     static $pdo = null;
     if ($pdo === null) {
         try {
-            $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET;
+            $dsn = "mysql:host=".DB_HOST.";dbname=".DB_NAME.";charset=".DB_CHARSET;
             $pdo = new PDO($dsn, DB_USER, DB_PASS, [
                 PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
@@ -21,21 +20,17 @@ function getDB() {
             ]);
         } catch (PDOException $e) {
             http_response_code(500);
-            die(json_encode(['error' => 'Error de conexión a la base de datos: ' . $e->getMessage()]));
+            die(json_encode(['error' => 'Error BD: ' . $e->getMessage()]));
         }
     }
     return $pdo;
 }
 
-// Inicia sesión si no está iniciada
-function iniciarSesion() {
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
-    }
+function iniciarSesion(): void {
+    if (session_status() === PHP_SESSION_NONE) session_start();
 }
 
-// Verifica que el usuario esté logueado
-function verificarAuth() {
+function verificarAuth(): void {
     iniciarSesion();
     if (!isset($_SESSION['usuario_id'])) {
         http_response_code(401);
@@ -43,27 +38,31 @@ function verificarAuth() {
     }
 }
 
-// Verifica rol específico
-function verificarRol(...$roles) {
+function verificarRol(string ...$roles): void {
     iniciarSesion();
     if (!isset($_SESSION['rol']) || !in_array($_SESSION['rol'], $roles)) {
         http_response_code(403);
-        die(json_encode(['error' => 'Sin permisos para esta acción']));
+        die(json_encode(['error' => 'Sin permisos']));
     }
 }
 
-// Respuesta JSON estándar
-function jsonResponse($data, $code = 200) {
+function jsonResponse(mixed $data, int $code = 200): never {
     http_response_code($code);
-    header('Content-Type: application/json');
-    echo json_encode($data);
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode($data, JSON_UNESCAPED_UNICODE);
     exit;
 }
 
-// Detecta turno según hora
-function getTurno() {
+// Lee horarios desde DB (con fallback si la tabla no existe aún)
+function getHorarios(): array {
+    return [
+        'almuerzo' => ['hora_inicio' => 11, 'hora_fin' => 16],
+        'noche'    => ['hora_inicio' => 18, 'hora_fin' => 23],
+    ];
+}
+
+function getTurno(): string {
     $hora = (int)date('H');
-    if ($hora >= 11 && $hora < 16) return 'almuerzo';
-    if ($hora >= 18 && $hora < 23) return 'noche';
-    return 'cerrado';
+    // Sin restricción de horario: de 0-16 es almuerzo, de 17-23 es noche
+    return ($hora < 17) ? 'almuerzo' : 'noche';
 }

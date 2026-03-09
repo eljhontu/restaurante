@@ -1,5 +1,5 @@
 <?php
-// index.php - Página de login
+// index.php - Página de login 
 require_once 'config/db.php';
 iniciarSesion();
 

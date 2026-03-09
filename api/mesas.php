@@ -68,6 +68,32 @@ elseif ($action === 'estado' && $method === 'POST') {
     jsonResponse(['success' => true]);
 }
 
+// ---- CREAR MESA ----
+elseif ($action === 'crear' && $method === 'POST') {
+    verificarRol('admin');
+    $data   = json_decode(file_get_contents('php://input'), true);
+    $numero = (int)($data['numero'] ?? 0);
+    if ($numero <= 0) jsonResponse(['error' => 'Número de mesa inválido'], 400);
+    $check = $pdo->prepare("SELECT id FROM mesas WHERE numero = ?");
+    $check->execute([$numero]);
+    if ($check->fetch()) jsonResponse(['error' => 'Ya existe una mesa con ese número'], 409);
+    $pdo->prepare("INSERT INTO mesas (numero) VALUES (?)")->execute([$numero]);
+    jsonResponse(['success' => true, 'id' => $pdo->lastInsertId()]);
+}
+
+// ---- ELIMINAR MESA ----
+elseif ($action === 'eliminar' && $method === 'POST') {
+    verificarRol('admin');
+    $data = json_decode(file_get_contents('php://input'), true);
+    $id   = (int)($data['id'] ?? 0);
+    // Verificar que no tenga pedidos activos
+    $check = $pdo->prepare("SELECT COUNT(*) as c FROM pedidos WHERE mesa_id = ? AND estado != 'pagado'");
+    $check->execute([$id]);
+    if ((int)$check->fetch()['c'] > 0) jsonResponse(['error' => 'La mesa tiene pedidos activos, no se puede eliminar'], 400);
+    $pdo->prepare("DELETE FROM mesas WHERE id = ?")->execute([$id]);
+    jsonResponse(['success' => true]);
+}
+
 else {
     jsonResponse(['error' => 'Acción no válida'], 400);
 }

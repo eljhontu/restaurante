@@ -1,4 +1,4 @@
-// assets/app.js — RestaurantOS v2
+// assets/app.js — Restaurante ALEJA v2
 
 // ============================================================
 // UTILIDADES GLOBALES
@@ -954,7 +954,18 @@ async function cajaHistorial() {
 async function imprimirFactura(mesaId, mesaNum) {
   const det = await api(`api/caja.php?action=consumo&mesa_id=${mesaId}`);
   const lineas = det.items?.map(i => `${i.nombre.substring(0,22).padEnd(22)} ${i.precio} Bs`).join('\n') || '';
-  const ticket = `===========================\n   RESTAURANTE OS\n===========================\nMesa: ${mesaNum}\nFecha: ${new Date().toLocaleString('es-BO')}\n---------------------------\n${lineas}\n---------------------------\nTOTAL:        ${det.total} Bs\n===========================\n  ¡Gracias por su visita!\n===========================`;
+  const ticket = `===========================
+   RESTAURANTE ALEJA
+===========================
+Mesa: ${mesaNum}
+Fecha: ${new Date().toLocaleString('es-BO')}
+---------------------------
+${lineas}
+---------------------------
+TOTAL:        ${det.total} Bs
+===========================
+  ¡Gracias por su visita!
+===========================`;
   openModal('🖨 Vista previa',
     `<pre style="font-family:monospace;font-size:.82rem;background:var(--bg);padding:16px;border-radius:8px;white-space:pre;line-height:1.5;">${ticket}</pre>`,
     [{ label: 'Cerrar', cls: 'btn-neutral', action: 'closeModal()' },

@@ -20,7 +20,7 @@ $roleLabel  = $roleLabels[$rol] ?? $rol;
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RestaurantOS — <?= htmlspecialchars($roleLabel) ?></title>
+<title>Restaurante ALEJA — <?= htmlspecialchars($roleLabel) ?></title>
 <link rel="stylesheet" href="assets/style.css">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
@@ -29,7 +29,7 @@ $roleLabel  = $roleLabels[$rol] ?? $rol;
 <!-- TOPBAR -->
 <div class="topbar">
   <div style="display:flex;align-items:center;gap:16px;">
-    <span class="topbar-brand">🍽 RestaurantOS</span>
+    <span class="topbar-brand">🍽 Restaurante ALEJA</span>
     <span class="badge badge-orange" id="turno-badge">
       <?= $turno==='almuerzo' ? '🌞 Turno Almuerzo' : ($turno==='noche' ? '🌙 Turno Noche' : '⏸ Sin turno') ?>
     </span>

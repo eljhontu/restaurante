@@ -53,7 +53,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);}
 </head>
 <body>
 <div class="qr-header">
-  <h1>🍽 RestaurantOS</h1>
+  <h1>🍽 Restaurante ALEJA</h1>
   <div class="qr-fecha" id="fecha-label">Cargando...</div>
 </div>
 <div class="container" id="app"><div class="loading">⏳ Cargando menú...</div></div>

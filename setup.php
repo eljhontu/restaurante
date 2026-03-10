@@ -13,7 +13,7 @@ $stmt = $pdo->query("SELECT nombre, usuario, rol FROM usuarios");
 $users = $stmt->fetchAll();
 
 echo '<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">
-<title>RestaurantOS — Setup</title>
+<title>Restaurante ALEJA — Setup</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600&display=swap" rel="stylesheet">
 <style>
   body{font-family:DM Sans,sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;background:#F7F3EE;}

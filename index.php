@@ -14,7 +14,7 @@ if (isset($_SESSION['usuario_id'])) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RestaurantOS — Login</title>
+<title>Restaurante ALEJA — Login</title>
 <link rel="stylesheet" href="assets/style.css">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
@@ -23,8 +23,8 @@ if (isset($_SESSION['usuario_id'])) {
 <div class="login-screen">
   <div class="login-card">
     <div class="login-logo">
-      <h1>🍽 RestaurantOS</h1>
-      <p>Sistema de Gestión de Restaurante</p>
+      <h1>🍽 Restaurante ALEJA</h1>
+      <p>Sistema de Gestión</p>
     </div>
 
     <div id="login-error" class="alert alert-error" style="display:none;"></div>
